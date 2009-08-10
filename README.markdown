@@ -3,8 +3,8 @@ Licensed under the MIT license
  
 # Mockingbird-Jetpack README #
 
-Mockingbird-Jetpack is an experimental [Mozilla Jetpack](https://jetpack.mozillalabs.com/) extension that displays tweets 
-related to the the content of the Firefox tab/document a user currently on.  This started as a 
+Mockingbird-Jetpack is an open source/experimental [Mozilla Jetpack](https://jetpack.mozillalabs.com/) extension that displays tweets 
+(Twitter messages) related to the the content of the Firefox tab/document a user currently on.  This started as a 
 port of [Mockingbird](http://github.com/cauld/mockingbird/tree/master).  The installation page 
 is located [here](http://opensourcepenguin.net/experiments/mockingbird-jetpack/).
 
@@ -18,19 +18,20 @@ work for you.  It should prove useful for finding opinions, links, images, etc.
 3.  To use, simply click on the new blue bird icon located on the bottom right hand corner of Firefox.
 
 ## HOW IT WORKS ##
-1.  Mockingbird-Jetpack uses [YQL](http://developer.yahoo.com/yql/) to get the contents of the 
-    web page that it was activated on.
+1.  Mockingbird-Jetpack uses the [Yahoo! Query Language (YQL)](http://developer.yahoo.com/yql/) to get the 
+    contents of the web page that it was activated on
 2.  The page content is them passed to the [Yahoo! Term Extraction Web 
-    Service](http://developer.yahoo.com/search/content/V1/termExtraction.html)
+    Service](http://developer.yahoo.com/search/content/V1/termExtraction.html) which helps identify and rank keywords
 3.  The top 3 page keyword terms are then used to to construct a [search 
-    against Twitter](http://apiwiki.twitter.com/Twitter-API-Documentation)
+    against Twitter](http://apiwiki.twitter.com/Twitter-API-Documentation) and display the latest results
+4.  That same search will continue to refresh once per minute until you have closed Mockingbird
     
 NOTE: Being that Mockingbird makes use of these 3rd party services please make sure you 
 have read and understood their TOS agreements.
     
 ## TODO ##
 1.  Move from a backend PHP proxy script to a Yahoo! pipe.  Currently in progress, pipe 
-    located at [http://pipes.yahoo.com/chadauld/related_tweets_since]http://pipes.yahoo.com/chadauld/related_tweets_since.
+    located at [http://pipes.yahoo.com/chadauld/related_tweets_since](http://pipes.yahoo.com/chadauld/related_tweets_since).
 2.  Rethink the Mockingbird div fixed position approach.  It would be best if the 
     Mockingbird code was in an independent overlay per tab which could always be 
     positioned over the tab document.  The jetpack sidebar could be an option, but 
