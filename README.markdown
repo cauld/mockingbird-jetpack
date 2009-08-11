@@ -38,4 +38,5 @@ have read and understood their TOS agreements.
     would need a way to adjust the sidebar per tab.  More research required.  Flash 
     and/or other positioned elements on a page currently present an overlap issue when 
     sharing the same screen space as Mockingbird-Jetpack.
-3.  Get a real logo.  As you can tell my graphics skills are limited :)
+3.  Remove dependancy on the Yahoo! Term Extraction Web Service since it is going away.
+4.  Get a real logo.  As you can tell my graphics skills are limited :)

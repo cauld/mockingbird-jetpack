@@ -15,6 +15,13 @@ jetpack.statusBar.append({
     var mockingBirdResourceUrl = "http://opensourcepenguin.net/experiments/mockingbird-jetpack/";
     
     /**
+    * Hides the mockingbird widget on the active tab/document
+    */
+    function hideMB() {
+        $(jetpack.tabs.focused.contentDocument).find("#mockingbird").fadeOut("normal");
+    }
+    
+    /**
     * Displays the mockingbird widget on the active tab/document
     */
     function showMB() {
@@ -56,13 +63,6 @@ jetpack.statusBar.append({
     }
     
     /**
-    * Hides the mockingbird widget on the active tab/document
-    */
-    function hideMB() {
-        $(jetpack.tabs.focused.contentDocument).find("#mockingbird").fadeOut("normal");
-    }
-    
-    /**
     * Fetch tweets related to the content of an existing tab/document
     */
     function fetchRelatedTweets() {
@@ -84,12 +84,7 @@ jetpack.statusBar.append({
                 (function() {
                     var localJpcd = jpcd,
                         requestURL,
-                        favIcon = jetpack.tabs[i].favicon,
-                        tDate, 
-                        tPrettyDate, 
-                        mText,
-                        tweetList,
-                        tweetResults = '';
+                        favIcon = jetpack.tabs[i].favicon;
                     
                     requestURL = mockingBirdResourceUrl + "mockingbird_proxy.php?page=" + jpcdUrl + "&since_id=" + sinceId;
                     
@@ -99,15 +94,22 @@ jetpack.statusBar.append({
                         timeout: 7000,
                         dataType: "json",
                         error: function(){
-                            localJpcd.find("#mockingbird-container").html('<div class="mockingbird-body"><p class="error">Failed to fetch related tweets!  Please try again later.</p></div>');
+                            //If a fetch fails and there are already results, just be silent and try again later.  If there are no existing results then warn.
+                            if (localJpcd.find("#loading-tweets").length === 1) {
+                                localJpcd.find("#mockingbird-container").html('<div class="mockingbird-body"><p class="error">Failed to fetch related tweets!  Please try again later.</p></div>');
+                            }
                         },
                         success: function(data){
                             if (data.results !== undefined && data.results.length > 0) {
                                 //Build a html block to insert based on the latest results
                                 //NOTE: Occasionally Twitter ignores the since_id param and returns results we already have so we
                                 //must verify it is not present in the DOM already.
-                                var actualInsertCount = 0;
+                                var actualInsertCount = 0,
+                                    tweetResults      = '';
+                                    
                                 $.each(data.results, function(i,result){
+                                    var tDate,tPrettyDate, mText;
+                                        
                                     if (localJpcd.find("#tweet-" + result.id).length === 0) {
                                         actualInsertCount++;
                                         //Format date
@@ -139,7 +141,7 @@ jetpack.statusBar.append({
                                     if (localJpcd.find("#loading-tweets").length === 1 || localJpcd.find("#mockingbird-container div p.error").length === 1) {
                                         localJpcd.find("#mockingbird-container").html(tweetResults);
                                     } else {
-                                        tweetList = localJpcd.find("#mockingbird-container").children().eq(0).before(tweetResults);
+                                        localJpcd.find("#mockingbird-container").children().eq(0).before(tweetResults);
                                     }
 
                                     //Show growl-like notification
